@@ -8,6 +8,7 @@ import {
 } from '@/schemas/authenticator';
 import { BadRequest } from 'http-errors';
 import { type NextRequest, NextResponse } from 'next/server';
+import * as otplib from 'otplib';
 import qs from 'qs';
 import type { z } from 'zod';
 
@@ -44,15 +45,27 @@ export const GET = handler<{
       updatedAt: true,
       platform: true,
       description: true,
+      key: true,
     },
     orderBy: {
       createdAt: data.order,
     },
   });
 
-  await authenticatorCache.set(cacheKey, authenticators);
+  const authenticatorsWithCode: Authenticator[] = authenticators.map(
+    (authenticator) => {
+      const authenticatorWithCode: Authenticator & Record<string, unknown> = {
+        ...authenticator,
+        code: otplib.authenticator.generate(authenticator.key),
+      };
+      delete authenticatorWithCode.key;
+      return authenticatorWithCode;
+    },
+  );
+
+  await authenticatorCache.set(cacheKey, authenticatorsWithCode);
 
   return NextResponse.json({
-    authenticators,
+    authenticators: authenticatorsWithCode,
   });
 });

@@ -8,6 +8,7 @@ import {
 } from '@/schemas/authenticator';
 import { BadRequest, NotFound } from 'http-errors';
 import { type NextRequest, NextResponse } from 'next/server';
+import * as otplib from 'otplib';
 import type { z } from 'zod';
 
 export const PATCH = handler<{
@@ -32,8 +33,14 @@ export const PATCH = handler<{
         updatedAt: true,
         platform: true,
         description: true,
+        key: true,
       },
     });
+    const authenticatorWithCode: Authenticator & Record<string, unknown> = {
+      ...authenticator,
+      code: otplib.authenticator.generate(authenticator.key),
+    };
+    delete authenticatorWithCode.key;
 
     const { authenticatorCache } = await cache;
     const cacheKeys = await authenticatorCache.store.keys(
@@ -42,7 +49,7 @@ export const PATCH = handler<{
     await authenticatorCache.store.mdel(...cacheKeys);
 
     return NextResponse.json({
-      authenticator,
+      authenticator: authenticatorWithCode,
     });
   } catch (error) {
     throw new NotFound('Authenticator not found');

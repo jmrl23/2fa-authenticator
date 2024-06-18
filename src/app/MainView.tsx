@@ -23,7 +23,7 @@ export default function MainView(props: Props) {
         </p>
       )}
       {!isLoading && authenticators && (
-        <Authenticators authenticators={authenticators} />
+        <Authenticators authenticators={authenticators} mutate={mutate} />
       )}
     </>
   );

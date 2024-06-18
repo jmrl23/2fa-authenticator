@@ -10,7 +10,9 @@ export declare global {
         platform: true;
         description: true;
       };
-    }> {}
+    }> {
+    code: string;
+  }
 
   interface ResponseErrorType {
     statusCode: number;

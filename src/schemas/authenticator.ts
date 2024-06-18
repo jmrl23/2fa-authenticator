@@ -2,9 +2,27 @@ import z from 'zod';
 import zodToJsonSchema from 'zod-to-json-schema';
 
 export const authenticatorListSchema = z.object({
-  platform: z.string().min(1).optional(),
-  description: z.string().min(1).optional(),
-  order: z.enum(['asc', 'desc']).optional(),
+  platform: z
+    .string({
+      message: 'platform must be a string',
+    })
+    .min(1, {
+      message: 'platform must contain at least 1 character(s)',
+    })
+    .optional(),
+  description: z
+    .string({
+      message: 'description must be a string',
+    })
+    .min(1, {
+      message: 'description must contain at least 1 character(s)',
+    })
+    .optional(),
+  order: z
+    .enum(['asc', 'desc'], {
+      message: 'order values could only be `asc`, or `desc`',
+    })
+    .optional(),
 });
 
 export const authenticatorListJsonSchema = zodToJsonSchema(
@@ -12,9 +30,28 @@ export const authenticatorListJsonSchema = zodToJsonSchema(
 );
 
 export const authenticatorCreateSchema = z.object({
-  key: z.string().min(1),
-  platform: z.string().min(1),
-  description: z.string().min(1).optional(),
+  key: z
+    .string({
+      message: 'key must be a string',
+    })
+    .min(1, {
+      message: 'key must contain at least 1 character(s)',
+    }),
+  platform: z
+    .string({
+      message: 'platform must be a string',
+    })
+    .min(1, {
+      message: 'platform must contain at least 1 character(s)',
+    }),
+  description: z
+    .string({
+      message: 'description must be a string',
+    })
+    .min(1, {
+      message: 'description must contain at least 1 character(s)',
+    })
+    .optional(),
 });
 
 export const authenticatorCreateJsonSchema = zodToJsonSchema(
@@ -22,10 +59,37 @@ export const authenticatorCreateJsonSchema = zodToJsonSchema(
 );
 
 export const authenticatorUpdateSchema = z.object({
-  id: z.string().uuid(),
-  key: z.string().min(1).optional(),
-  platform: z.string().min(1).optional(),
-  description: z.string().min(1).optional(),
+  id: z
+    .string({
+      message: 'id must be a string',
+    })
+    .uuid({
+      message: 'id must be in uuid format',
+    }),
+  key: z
+    .string({
+      message: 'key must be a string',
+    })
+    .min(1, {
+      message: 'key must contain at least 1 character(s)',
+    })
+    .optional(),
+  platform: z
+    .string({
+      message: 'platform must be a string',
+    })
+    .min(1, {
+      message: 'platform must contain at least 1 character(s)',
+    })
+    .optional(),
+  description: z
+    .string({
+      message: 'description must be a string',
+    })
+    .min(1, {
+      message: 'description must contain at least 1 character(s)',
+    })
+    .optional(),
 });
 
 export const authenticatorUpdateJsonSchema = zodToJsonSchema(
@@ -33,7 +97,13 @@ export const authenticatorUpdateJsonSchema = zodToJsonSchema(
 );
 
 export const authenticatorDeleteSchema = z.object({
-  id: z.string().uuid(),
+  id: z
+    .string({
+      message: 'id must be a string',
+    })
+    .uuid({
+      message: 'id must be in uuid format',
+    }),
 });
 
 export const authenticatorDeleteJsonSchema = zodToJsonSchema(

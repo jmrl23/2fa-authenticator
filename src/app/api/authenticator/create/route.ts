@@ -8,6 +8,7 @@ import {
 } from '@/schemas/authenticator';
 import { BadRequest } from 'http-errors';
 import { type NextRequest, NextResponse } from 'next/server';
+import * as otplib from 'otplib';
 import type { z } from 'zod';
 
 export const POST = handler<{
@@ -29,14 +30,22 @@ export const POST = handler<{
       updatedAt: true,
       platform: true,
       description: true,
+      key: true,
     },
   });
+
+  const authenticatorWithCode: Authenticator & Record<string, unknown> = {
+    ...authenticator,
+    code: otplib.authenticator.generate(authenticator.key),
+  };
+
+  delete authenticatorWithCode.key;
 
   const { authenticatorCache } = await cache;
   const cacheKeys = await authenticatorCache.store.keys('authenticator:list:*');
   await authenticatorCache.store.mdel(...cacheKeys);
 
   return NextResponse.json({
-    authenticator,
+    authenticator: authenticatorWithCode,
   });
 });
