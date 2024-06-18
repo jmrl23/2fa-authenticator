@@ -10,7 +10,9 @@
     "format": "prettier --write \"src/**/*.{ts,js,tsx,jsx}\""
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.6.0",
     "@prisma/client": "^5.15.0",
+    "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "ajv": "^8.16.0",
     "ajv-formats": "^3.0.1",
@@ -25,7 +27,11 @@
     "next": "14.2.4",
     "qs": "^6.12.1",
     "react": "^18",
+    "react-cookie": "^7.1.4",
     "react-dom": "^18",
+    "react-hook-form": "^7.52.0",
+    "react-hot-toast": "^2.4.1",
+    "swr": "^2.2.5",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8",

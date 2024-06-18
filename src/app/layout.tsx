@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { cn } from '@/lib/shared/utils';
+import { Toaster } from 'react-hot-toast';
 import '@/styles/globals.css';
 
 const inter = Inter({
@@ -19,7 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' suppressHydrationWarning={true}>
-      <body className={cn(inter.className, 'font-sans')}>{children}</body>
+      <body className={cn(inter.className, 'font-sans')}>
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }
