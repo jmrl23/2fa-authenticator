@@ -21,7 +21,7 @@ export function validate<T extends Record<string, unknown>>(
   const error = errors.at(0);
   return {
     valid,
-    error: error?.error.trim?.(),
+    error: error?.error?.trim?.(),
   };
 }
 

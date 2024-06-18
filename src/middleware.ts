@@ -8,6 +8,8 @@ export const config: MiddlewareConfig = {
 };
 
 export default handler(async function middleware(request: NextRequest) {
-  if (!isAuthorized(request)) throw Unauthorized();
+  if (request.nextUrl.pathname.startsWith('/api')) {
+    if (!isAuthorized(request)) throw Unauthorized();
+  }
   return NextResponse.next();
 });

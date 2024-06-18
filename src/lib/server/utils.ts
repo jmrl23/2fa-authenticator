@@ -27,6 +27,12 @@ export function handler<T>(
       if (error instanceof Error && !(error instanceof HttpError)) {
         error = new InternalServerError(error.message);
       }
+      if (
+        !(error instanceof HttpError) ||
+        (error instanceof HttpError && error.statusCode > 499)
+      ) {
+        console.error(error);
+      }
       if (error instanceof HttpError) return responseError(error);
       return responseError(new InternalServerError('An error occurs'));
     }
