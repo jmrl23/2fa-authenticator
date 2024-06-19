@@ -21,7 +21,6 @@
     "cache-manager": "^5.6.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "env-var": "^7.5.0",
     "http-errors": "^2.0.0",
     "lucide-react": "^0.395.0",
     "ms": "^2.1.3",

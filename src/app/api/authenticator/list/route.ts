@@ -1,7 +1,7 @@
 import { validate } from '@/lib/server/ajv';
 import cache from '@/lib/server/cache';
 import prismaClient from '@/lib/server/prismaClient';
-import { handler } from '@/lib/server/utils';
+import { getAuthKey, handler } from '@/lib/server/utils';
 import {
   authenticatorListJsonSchema,
   type authenticatorListSchema,
@@ -21,7 +21,8 @@ export const GET = handler<{
   const { error, valid } = validate(authenticatorListJsonSchema, data);
   if (!valid) throw new BadRequest(error);
   const { authenticatorCache } = await cache;
-  const cacheKey = `authenticator:list:${JSON.stringify(data)}`;
+  const authKey = getAuthKey(request)!;
+  const cacheKey = `authenticator:${authKey}:list:${JSON.stringify(data)}`;
   const cachedData = await authenticatorCache.get<Authenticator[]>(cacheKey);
 
   if (cachedData) {
@@ -32,6 +33,7 @@ export const GET = handler<{
 
   const authenticators = await prismaClient.authenticator.findMany({
     where: {
+      authKey,
       platform: {
         contains: data.platform,
       },

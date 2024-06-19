@@ -15,4 +15,5 @@ model Authenticator {
   key         String
   platform    String
   description String?
+  authKey     String
 }

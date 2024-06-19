@@ -1,7 +1,7 @@
 import { validate } from '@/lib/server/ajv';
 import cache from '@/lib/server/cache';
 import prismaClient from '@/lib/server/prismaClient';
-import { handler } from '@/lib/server/utils';
+import { getAuthKey, handler } from '@/lib/server/utils';
 import {
   authenticatorUpdateJsonSchema,
   type authenticatorUpdateSchema,
@@ -17,9 +17,11 @@ export const PATCH = handler<{
   const data: z.infer<typeof authenticatorUpdateSchema> = await request.json();
   const { error, valid } = validate(authenticatorUpdateJsonSchema, data);
   if (!valid) throw new BadRequest(error);
+  const authKey = getAuthKey(request)!;
   try {
     const authenticator = await prismaClient.authenticator.update({
       where: {
+        authKey,
         id: data.id,
       },
       data: {
@@ -44,7 +46,7 @@ export const PATCH = handler<{
 
     const { authenticatorCache } = await cache;
     const cacheKeys = await authenticatorCache.store.keys(
-      'authenticator:list:*',
+      `authenticator:${authKey}:list:*`,
     );
     await authenticatorCache.store.mdel(...cacheKeys);
 

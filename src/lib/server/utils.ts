@@ -1,6 +1,5 @@
 import { HttpError, InternalServerError } from 'http-errors';
-import { NextResponse } from 'next/server';
-import { AUTH_KEY } from './vars';
+import { type NextRequest, NextResponse } from 'next/server';
 
 export function responseError({
   statusCode,
@@ -39,9 +38,9 @@ export function handler<T>(
   };
 }
 
-export function isAuthorized(request: Request): boolean {
-  if (!request.headers.has('authorization')) return false;
+export function getAuthKey(request: NextRequest): string | null {
+  if (!request.headers.has('authorization')) return null;
   const [scheme, key] = request.headers.get('authorization')?.split(' ') ?? [];
-  if (scheme !== 'Bearer' || key !== AUTH_KEY) return false;
-  return true;
+  if (scheme !== 'Bearer' || key === undefined) return null;
+  return key;
 }

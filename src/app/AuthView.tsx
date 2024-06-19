@@ -41,9 +41,7 @@ export default function AuthView() {
           >
             <h1 className='font-extrabold text-2xl mb-4'>Checkpoint</h1>
             <p className='bg-gray-100 p-4 rounded mb-4 text-gray-700 font-bold text-sm border'>
-              {
-                "Enter authorization key that will serve as payload to access the application's resources."
-              }
+              {'Enter your authorization key to access your authenticators.'}
             </p>
             <FormField
               control={form.control}

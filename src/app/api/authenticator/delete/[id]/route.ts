@@ -1,7 +1,7 @@
 import { validate } from '@/lib/server/ajv';
 import cache from '@/lib/server/cache';
 import prismaClient from '@/lib/server/prismaClient';
-import { handler } from '@/lib/server/utils';
+import { getAuthKey, handler } from '@/lib/server/utils';
 import {
   authenticatorDeleteJsonSchema,
   type authenticatorDeleteSchema,
@@ -19,9 +19,11 @@ export const DELETE = handler<{
   };
   const { error, valid } = validate(authenticatorDeleteJsonSchema, data);
   if (!valid) throw new BadRequest(error);
+  const authKey = getAuthKey(request)!;
   try {
     const authenticator = await prismaClient.authenticator.delete({
       where: {
+        authKey,
         id: data.id,
       },
       select: {
@@ -42,7 +44,7 @@ export const DELETE = handler<{
 
     const { authenticatorCache } = await cache;
     const cacheKeys = await authenticatorCache.store.keys(
-      'authenticator:list:*',
+      `authenticator:${authKey}:list:*`,
     );
     await authenticatorCache.store.mdel(...cacheKeys);
 
