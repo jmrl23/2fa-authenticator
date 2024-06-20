@@ -10,7 +10,7 @@ export default function useAuthenticators(
 ) {
   const [cookies] = useCookies(['authKey']);
   const swrResult = useSWR(
-    `authenticator:list:${JSON.stringify(payload)}`,
+    `authenticator:${cookies.authKey}:list:${JSON.stringify(payload)}`,
     async function fetcher() {
       const query = qs.stringify(payload);
       const response = await fetch(`/api/authenticator/list?${query}`, {
