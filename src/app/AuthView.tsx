@@ -49,7 +49,12 @@ export default function AuthView() {
               render={({ field, fieldState }) => (
                 <FormItem>
                   <FormControl>
-                    <Input type='password' placeholder='key' {...field} />
+                    <Input
+                      type='password'
+                      placeholder='key'
+                      autoFocus
+                      {...field}
+                    />
                   </FormControl>
                   <FormDescription />
                   <FormMessage>{fieldState.error?.message}</FormMessage>
