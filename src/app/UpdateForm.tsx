@@ -41,7 +41,7 @@ export default function UpdateForm(props: Props) {
     if (!formData.description) delete formData.description;
     formData.key = formData.key?.trim();
     try {
-      const response = await fetch('/api/authenticator/update', {
+      const response = await fetch('/api/authenticators/update', {
         method: 'PATCH',
         headers: {
           authorization: `Bearer ${cookies.authKey}`,

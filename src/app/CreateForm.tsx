@@ -39,7 +39,7 @@ export default function CreateForm(props: Props) {
     if (!formData.description) delete formData.description;
     formData.key = formData.key.trim();
     try {
-      const response = await fetch('/api/authenticator/create', {
+      const response = await fetch('/api/authenticators/create', {
         method: 'POST',
         headers: {
           authorization: `Bearer ${cookies.authKey}`,

@@ -15,7 +15,7 @@ export default function DeleteForm(props: Props) {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `/api/authenticator/delete/${props.authenticator.id}`,
+        `/api/authenticators/delete/${props.authenticator.id}`,
         {
           method: 'DELETE',
           headers: {

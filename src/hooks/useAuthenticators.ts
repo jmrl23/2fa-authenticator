@@ -13,7 +13,7 @@ export default function useAuthenticators(
     `authenticator:${cookies.authKey}:list:${JSON.stringify(payload)}`,
     async function fetcher() {
       const query = qs.stringify(payload);
-      const response = await fetch(`/api/authenticator/list?${query}`, {
+      const response = await fetch(`/api/authenticators?${query}`, {
         headers: {
           authorization: `Bearer ${cookies.authKey}`,
         },
