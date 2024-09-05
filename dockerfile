@@ -4,8 +4,10 @@ WORKDIR /app
 
 COPY . .
 
-RUN yarn install
-RUN yarn run prisma db push
-RUN yarn run build
+ENV NODE_ENV=production
+ENV PORT=3000
 
-ENTRYPOINT [ "yarn", "run", "start" ]
+RUN yarn install
+RUN chmod +x ./run
+
+ENTRYPOINT [ "./run" ]
