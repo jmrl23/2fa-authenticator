@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { cn } from '@/lib/shared/utils';
+import { cn } from '@/lib/utils';
 import { CheckIcon, CopyIcon, PenIcon, TrashIcon } from 'lucide-react';
 import ms from 'ms';
 import { useState } from 'react';
@@ -12,8 +12,8 @@ export default function Authenticators({ authenticators, mutate }: Props) {
   if (authenticators.length < 1) {
     return (
       <div className='bg-gray-100 p-4 rounded m-4 text-gray-700 font-bold border'>
-        Seems you don&apos;t have any authenticator yet, kindly press the plus
-        icon to create one.
+        You haven&apos;t created a 2FA authenticator in the app yet. Please set
+        it up now to enhance your account security.
       </div>
     );
   }

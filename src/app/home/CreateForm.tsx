@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { api } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2Icon } from 'lucide-react';
 import { useRef, useState } from 'react';
@@ -39,18 +40,19 @@ export default function CreateForm(props: Props) {
     if (!formData.description) delete formData.description;
     formData.key = formData.key.trim();
     try {
-      const response = await fetch('/api/authenticators/create', {
-        method: 'POST',
-        headers: {
-          authorization: `Bearer ${cookies.authKey}`,
+      await api.post<{ data: Authenticator }>(
+        '/authenticators/create',
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.authKey}`,
+          },
         },
-        body: JSON.stringify(formData),
-      });
-      const data: { authenticator: Authenticator } | ResponseErrorType =
-        await response.json();
-      if ('error' in data) throw new Error(data.message);
+      );
+      toast.success('Authenticator created!');
       props.mutate();
     } catch (error) {
+      console.error(Error);
       if (error instanceof Error) {
         toast.error(error.message);
       }

@@ -39,9 +39,12 @@ export default function AuthView() {
             onSubmit={form.handleSubmit(onSubmit)}
             className='p-4 bg-background rounded shadow'
           >
-            <h1 className='font-extrabold text-2xl mb-4'>Checkpoint</h1>
+            <h1 className='font-extrabold text-2xl mb-4'>
+              Enter Your Unique Key
+            </h1>
             <p className='bg-gray-100 p-4 rounded mb-4 text-gray-700 font-bold text-sm border'>
-              {'Enter your authorization key to access your authenticators.'}
+              To access your authenticator, please enter your unique key. This
+              key is required to securely verify your identity.
             </p>
             <FormField
               control={form.control}

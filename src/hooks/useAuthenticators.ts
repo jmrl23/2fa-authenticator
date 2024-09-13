@@ -1,31 +1,33 @@
-import { authenticatorListSchema } from '@/schemas/authenticator';
-import qs from 'qs';
+import { api } from '@/lib/utils';
 import { useCookies } from 'react-cookie';
-import toast from 'react-hot-toast';
 import useSWR from 'swr';
-import { z } from 'zod';
 
-export default function useAuthenticators(
-  payload: z.infer<typeof authenticatorListSchema> = {},
-) {
-  const [cookies] = useCookies(['authKey']);
-  const swrResult = useSWR(
-    `authenticator:${cookies.authKey}:list:${JSON.stringify(payload)}`,
-    async function fetcher() {
-      const query = qs.stringify(payload);
-      const response = await fetch(`/api/authenticators?${query}`, {
+async function getAuthenticators(authKey?: string): Promise<Authenticator[]> {
+  if (!authKey) return [];
+  try {
+    const response = await api.get<{ data: Authenticator[] }>(
+      '/authenticators',
+      {
         headers: {
-          authorization: `Bearer ${cookies.authKey}`,
+          Authorization: `Bearer ${authKey}`,
         },
-      });
-      const data: { authenticators: Authenticator[] } | ResponseErrorType =
-        await response.json();
-      if ('error' in data) {
-        toast.error(data.message);
-        return [];
-      }
-      return data.authenticators;
-    },
+      },
+    );
+    const { data } = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+export default function useAuthenticators() {
+  const [cookies] = useCookies(['authKey']);
+  const result = useSWR(`authenticator:${cookies.authKey}:list`, () =>
+    getAuthenticators(cookies.authKey),
   );
-  return swrResult;
+  return {
+    ...result,
+    data: result.data ?? [],
+  };
 }

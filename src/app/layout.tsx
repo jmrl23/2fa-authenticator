@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { cn } from '@/lib/shared/utils';
+import { cn } from '@/lib/utils';
 import { Toaster } from 'react-hot-toast';
 import '@/styles/globals.css';
 
@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Authenticator',
-  description: 'Personal authenticator application',
+  title: '2FA Authenticator',
+  description: 'Authenticator application',
 };
 
 export default function RootLayout({
@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning={true}>
       <body className={cn(inter.className, 'font-sans')}>
-        {children}
+        <main className='max-w-screen-sm md:mx-auto'>{children}</main>
         <Toaster />
       </body>
     </html>

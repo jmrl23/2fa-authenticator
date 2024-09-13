@@ -1,6 +1,7 @@
 import Ajv from 'ajv';
 import ajvFormats from 'ajv-formats';
 /** @ts-expect-error */
+// declaration is not available
 import betterAjvErrors from 'better-ajv-errors';
 
 export function validate<T extends Record<string, unknown>>(

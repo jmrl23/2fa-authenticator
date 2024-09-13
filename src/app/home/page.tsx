@@ -1,4 +1,4 @@
-import AuthView from '@/app/AuthView';
+import Main from '@/app/home/Main';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -7,7 +7,7 @@ export default function Page() {
   const authCookie = cookieStore.get('authKey');
   const authKey = authCookie?.value;
 
-  if (authKey) return redirect('/home');
+  if (!authKey) return redirect('/');
 
-  return <AuthView />;
+  return <Main />;
 }
